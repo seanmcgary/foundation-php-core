@@ -7,6 +7,8 @@
  * @author Sean McGary <sean@seanmcgary.com>
  */
 
+define('LIBPATH', BASEPATH.'lib/');
+
 // set the include paths to everything inside lib
 
 set_include_path(get_include_path() . ':'.BASEPATH.'core');
@@ -42,6 +44,12 @@ if(isset($argv))
     $_SERVER['PATH_INFO'] = $_SERVER['REQUEST_URI'] = ''.implode('/', $argv).'/';
 }
 
+// load the utility functions
+require_once('util.php');
+
+// load some common functions
+require_once('common.php');
+
 
 // get the URI segment
 $URI = $_SERVER['REQUEST_URI'];
@@ -57,6 +65,10 @@ $URI = str_replace('index.php', '', $URI);
 
 // remove leading and trailing slashes
 $URI = trim($URI, '/');
+//printr($URI);
+
+$URI = str_replace('?', '/', $URI);
+
 
 // if the length of the URI is 0, load the default controller
 // and default function
@@ -65,24 +77,9 @@ if(strlen($URI) == 0)
     $URI .= $routes['default'];
 }
 
-// load the utility functions
-require_once('util.php');
-
-// load some common functions
-require_once('common.php');
-
 // break up URI into segments
 $URI_SEG = explode('/', $URI);
 
-//printr($URI_SEG);
-
-/*
-// if we're missing the deafult function, add it only if there arent any other parameters
-if(sizeof($URI_SEG) < 2)
-{
-    $URI_SEG[1] = $routes['function'];
-}
-*/
 
 $controller_to_call = get_controller_and_function($URI_SEG, $routes);
 //printr($controller_to_call);
