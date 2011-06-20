@@ -25,6 +25,12 @@ class core_load
      */
     public function view($view_name, $params = array(), $return = false)
     {
+
+        if($params == '')
+        {
+            $params = array();
+        }
+
         // start the buffer
         ob_start();
 
