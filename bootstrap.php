@@ -10,11 +10,11 @@
 // set the include paths to everything inside lib
 
 set_include_path(get_include_path() . ':'.BASEPATH.'core');
-set_include_path(get_include_path() . ':'.BASEPATH.'models');
-set_include_path(get_include_path() . ':'.BASEPATH.'controllers');
-set_include_path(get_include_path() . ':'.BASEPATH.'views');
-set_include_path(get_include_path() . ':'.BASEPATH.'config');
-set_include_path(get_include_path() . ':'.BASEPATH.'libraries');
+set_include_path(get_include_path() . ':'.LIBPATH.'models');
+set_include_path(get_include_path() . ':'.LIBPATH.'controllers');
+set_include_path(get_include_path() . ':'.LIBPATH.'views');
+set_include_path(get_include_path() . ':'.LIBPATH.'config');
+set_include_path(get_include_path() . ':'.LIBPATH.'libraries');
 
 function __autoload($class_name)
 {
@@ -33,6 +33,13 @@ if($config['index_page'] != '')
 else
 {
     define('BASEURL', $config['base_url'].$config['url_extension']);
+}
+
+if(isset($argv))
+{
+    //print_r($argv);
+    unset($argv[0]);
+    $_SERVER['PATH_INFO'] = $_SERVER['REQUEST_URI'] = ''.implode('/', $argv).'/';
 }
 
 
@@ -58,20 +65,28 @@ if(strlen($URI) == 0)
     $URI .= $routes['default'];
 }
 
-// break up URI into segments
-$URI_SEG = explode('/', $URI);
-
-// if we're missing the deafult function, add it only if there arent any other parameters
-if(sizeof($URI_SEG) < 2)
-{
-    $URI_SEG[1] = $routes['function'];
-}
-
 // load the utility functions
 require_once('util.php');
 
 // load some common functions
 require_once('common.php');
+
+// break up URI into segments
+$URI_SEG = explode('/', $URI);
+
+//printr($URI_SEG);
+
+/*
+// if we're missing the deafult function, add it only if there arent any other parameters
+if(sizeof($URI_SEG) < 2)
+{
+    $URI_SEG[1] = $routes['function'];
+}
+*/
+
+$controller_to_call = get_controller_and_function($URI_SEG, $routes);
+//printr($controller_to_call);
+
 
 // Instantiate some controller level classes.
 // These will be loaded to the core controller in the constructor
@@ -87,9 +102,11 @@ $INPUT = core_loadFactory::get_inst('core_input', 'input');
  * 3 => param2
  * n => param n
  */
+
+
 // prepend the controller name with the path
-$controller_name = 'lib_controllers_'.$URI_SEG[0];
-$function_name = $URI_SEG[1];
+$controller_name = $controller_to_call[0];
+$function_name = $controller_to_call[1];
 
 // dynamically load the controller
 //$controller_inst = new $controller_name();

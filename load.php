@@ -1,6 +1,6 @@
 <?php
 /**
- * loader.php
+ * load.php
  *
  * Loader class loads specified objects, databases, views, etc
  *

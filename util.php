@@ -92,3 +92,46 @@ function directory_map($source_dir, $directory_depth = 0, $hidden = FALSE)
 
     return FALSE;
 }
+
+/**
+ * Given the URI segments, find the controller and the function by checking to see if the
+ * class file exists;
+ *
+ * @param  $uri
+ * @param  $routes
+ * @return array
+ */
+function get_controller_and_function(&$uri, $routes)
+{
+    //printr($uri);
+
+    $ret_val = array();
+
+    $controller_path = 'lib_controllers';
+
+    for($i = 0; $i < sizeof($uri); $i++)
+    {
+
+
+        $controller_path .= '_'.$uri[$i];
+        //echo $controller_path.'<br>';
+
+        if(file_exists(str_replace('_', '/', $controller_path).'.php'))
+        {
+            $ret_val[0] = $controller_path;
+
+
+            if(($i + 1) <= sizeof($uri) - 1)
+            {
+                $ret_val[1] = $uri[$i + 1];
+            }
+            else
+            {
+                $ret_val[1] = $routes['function'];
+                $uri[$i + 1] = $routes['function'];
+            }
+        }
+    }
+
+    return $ret_val;
+}
