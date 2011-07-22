@@ -10,8 +10,10 @@
 define('LIBPATH', BASEPATH.'lib/');
 
 // set the include paths to everything inside lib
+set_include_path(get_include_path() . PATH_SEPARATOR.BASEPATH);
 set_include_path(get_include_path() . PATH_SEPARATOR.BASEPATH.'core');
-set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'models');
+set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH);
+set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'config');
 set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'controllers');
 set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'views');
 set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'config');

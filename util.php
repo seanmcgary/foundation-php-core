@@ -55,9 +55,16 @@ function redirect($url = false)
     header('Location: '.$url);
 }
 
-function get_uri()
+function is_xhr()
 {
-    
+    if(array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 function directory_map($source_dir, $directory_depth = 0, $hidden = FALSE)

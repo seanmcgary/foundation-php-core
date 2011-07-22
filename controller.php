@@ -23,8 +23,6 @@ class core_controller
             $name = get_class($inst);
             //echo $name.'<br>';
             $this->{$key} = $inst;
-
-            
         }
     }
 
