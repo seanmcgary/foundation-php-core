@@ -43,6 +43,9 @@ if(isset($argv))
     //print_r($argv);
     unset($argv[0]);
     $_SERVER['PATH_INFO'] = $_SERVER['REQUEST_URI'] = ''.implode('/', $argv).'/';
+
+    $_SERVER['DATABASE'] = 'blue_panda';
+    $_SERVER['DATABASE_HOST'] = 'seanmcgary.com:27017';
 }
 
 // load the utility functions
@@ -51,9 +54,16 @@ require_once('util.php');
 // load some common functions
 require_once('common.php');
 
-
 // get the URI segment
 $URI = $_SERVER['REQUEST_URI'];
+
+if($_SERVER['PHP_SELF'] != '/index.php')
+{
+    $uri_extension = str_replace('index.php', '', $_SERVER['PHP_SELF']);
+
+    $URI = str_replace($uri_extension, '', $URI);
+}
+
 
 // remove the domain extension
 if($config['url_extension'] != '')
@@ -66,7 +76,6 @@ $URI = str_replace('index.php', '', $URI);
 
 // remove leading and trailing slashes
 $URI = trim($URI, '/');
-//printr($URI);
 
 $URI = str_replace('?', '/', $URI);
 
