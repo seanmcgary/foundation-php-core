@@ -57,12 +57,7 @@ require_once('common.php');
 // get the URI segment
 $URI = $_SERVER['REQUEST_URI'];
 
-if($_SERVER['PHP_SELF'] != '/index.php')
-{
-    $uri_extension = str_replace('index.php', '', $_SERVER['PHP_SELF']);
 
-    $URI = str_replace($uri_extension, '', $URI);
-}
 
 
 // remove the domain extension
@@ -79,6 +74,7 @@ $URI = trim($URI, '/');
 
 $URI = str_replace('?', '/', $URI);
 
+//printr($URI);
 
 // if the length of the URI is 0, load the default controller
 // and default function
@@ -87,6 +83,9 @@ if(strlen($URI) == 0)
     $URI .= $routes['default'];
 }
 
+
+
+//printr($URI);
 // break up URI into segments
 $URI_SEG = explode('/', $URI);
 
@@ -112,6 +111,7 @@ $INPUT = core_loadFactory::get_inst('core_input', 'input');
 
 
 // prepend the controller name with the path
+//printr($controller_to_call);
 $controller_name = $controller_to_call[0];
 $function_name = $controller_to_call[1];
 
