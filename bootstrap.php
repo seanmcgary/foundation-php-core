@@ -10,11 +10,11 @@
 // set the include paths to everything inside lib
 
 set_include_path(get_include_path() . ':'.BASEPATH.'core');
-set_include_path(get_include_path() . ':'.BASEPATH.'models');
-set_include_path(get_include_path() . ':'.BASEPATH.'controllers');
-set_include_path(get_include_path() . ':'.BASEPATH.'views');
-set_include_path(get_include_path() . ':'.BASEPATH.'config');
-set_include_path(get_include_path() . ':'.BASEPATH.'libraries');
+set_include_path(get_include_path() . ':'.LIBPATH.'models');
+set_include_path(get_include_path() . ':'.LIBPATH.'controllers');
+set_include_path(get_include_path() . ':'.LIBPATH.'views');
+set_include_path(get_include_path() . ':'.LIBPATH.'config');
+set_include_path(get_include_path() . ':'.LIBPATH.'libraries');
 
 function __autoload($class_name)
 {

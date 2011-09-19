@@ -32,7 +32,7 @@ class core_load
         extract($params);
 
         // include the view file
-        include(BASEPATH.'views/'.$view_name.'.php');
+        include(LIBPATH.'views/'.$view_name.'.php');
 
         // if return, dont flush the buffer to the screen. Assign it to a variable and return
         if($return == true)
