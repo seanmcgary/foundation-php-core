@@ -59,5 +59,7 @@ class core_input
         {
             $get_vals[$var] = $_GET[$var];
         }
+
+        return $get_vals;
     }
 }

@@ -77,6 +77,7 @@ require_once('common.php');
 // These will be loaded to the core controller in the constructor
 $URI_INST = core_loadFactory::get_inst('core_uri', 'uri', $URI_SEG);
 $LOAD = core_loadFactory::get_inst('core_load', 'load');
+$INPUT = core_loadFactory::get_inst('core_input', 'input');
 
 /**
  * $URI structure
