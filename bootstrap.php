@@ -7,17 +7,14 @@
  * @author Sean McGary <sean@seanmcgary.com>
  */
 
-define('LIBPATH', BASEPATH.'lib/');
-
 // set the include paths to everything inside lib
-set_include_path(get_include_path() . PATH_SEPARATOR.BASEPATH);
-set_include_path(get_include_path() . PATH_SEPARATOR.BASEPATH.'core');
-set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH);
-set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'config');
-set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'controllers');
-set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'views');
-set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'config');
-set_include_path(get_include_path() . PATH_SEPARATOR.LIBPATH.'libraries');
+
+set_include_path(get_include_path() . ':'.BASEPATH.'core');
+set_include_path(get_include_path() . ':'.LIBPATH.'models');
+set_include_path(get_include_path() . ':'.LIBPATH.'controllers');
+set_include_path(get_include_path() . ':'.LIBPATH.'views');
+set_include_path(get_include_path() . ':'.LIBPATH.'config');
+set_include_path(get_include_path() . ':'.LIBPATH.'libraries');
 
 function __autoload($class_name)
 {
@@ -38,27 +35,9 @@ else
     define('BASEURL', $config['base_url'].$config['url_extension']);
 }
 
-if(isset($argv))
-{
-    //print_r($argv);
-    unset($argv[0]);
-    $_SERVER['PATH_INFO'] = $_SERVER['REQUEST_URI'] = ''.implode('/', $argv).'/';
-
-    $_SERVER['DATABASE'] = 'blue_panda';
-    $_SERVER['DATABASE_HOST'] = 'seanmcgary.com:27017';
-}
-
-// load the utility functions
-require_once('util.php');
-
-// load some common functions
-require_once('common.php');
 
 // get the URI segment
 $URI = $_SERVER['REQUEST_URI'];
-
-
-
 
 // remove the domain extension
 if($config['url_extension'] != '')
@@ -72,10 +51,6 @@ $URI = str_replace('index.php', '', $URI);
 // remove leading and trailing slashes
 $URI = trim($URI, '/');
 
-$URI = str_replace('?', '/', $URI);
-
-//printr($URI);
-
 // if the length of the URI is 0, load the default controller
 // and default function
 if(strlen($URI) == 0)
@@ -83,22 +58,25 @@ if(strlen($URI) == 0)
     $URI .= $routes['default'];
 }
 
-
-
-//printr($URI);
 // break up URI into segments
 $URI_SEG = explode('/', $URI);
 
+// if we're missing the deafult function, add it only if there arent any other parameters
+if(sizeof($URI_SEG) < 2)
+{
+    $URI_SEG[1] = $routes['function'];
+}
 
-$controller_to_call = get_controller_and_function($URI_SEG, $routes);
-//printr($controller_to_call);
+// load the utility functions
+require_once('util.php');
 
+// load some common functions
+require_once('common.php');
 
 // Instantiate some controller level classes.
 // These will be loaded to the core controller in the constructor
 $URI_INST = core_loadFactory::get_inst('core_uri', 'uri', $URI_SEG);
 $LOAD = core_loadFactory::get_inst('core_load', 'load');
-$INPUT = core_loadFactory::get_inst('core_input', 'input');
 
 /**
  * $URI structure
@@ -108,12 +86,9 @@ $INPUT = core_loadFactory::get_inst('core_input', 'input');
  * 3 => param2
  * n => param n
  */
-
-
 // prepend the controller name with the path
-//printr($controller_to_call);
-$controller_name = $controller_to_call[0];
-$function_name = $controller_to_call[1];
+$controller_name = 'lib_controllers_'.$URI_SEG[0];
+$function_name = $URI_SEG[1];
 
 // dynamically load the controller
 //$controller_inst = new $controller_name();
