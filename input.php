@@ -18,7 +18,7 @@ class core_input
 
         if(array_key_exists($post_var, $_POST))
         {
-            return stripcslashes($_POST[$post_var]);
+            return htmlentities(stripcslashes($_POST[$post_var]));
         }
         else
         {
@@ -34,7 +34,7 @@ class core_input
         {
             if(array_key_exists($var, $_POST))
             {
-                $post_vals[$var] = stripcslashes($_POST[$var]);
+                $post_vals[$var] = htmlentities(stripcslashes($_POST[$var]));
             }
             else
             {
