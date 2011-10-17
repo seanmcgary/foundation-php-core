@@ -24,7 +24,6 @@ class core_controller
             //echo $name.'<br>';
             $this->{$key} = $inst;
 
-            
         }
     }
 
