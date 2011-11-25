@@ -53,4 +53,10 @@ class core_load
         }
     }
 
+    public function json_config($config_name)
+    {
+        return json_decode(file_get_contents(LIBPATH.'config/'.$config_name), true);
+    }
+
 }
+
