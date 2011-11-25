@@ -41,7 +41,8 @@ if(isset($argv))
 {
     //print_r($argv);
     unset($argv[0]);
-    $_SERVER['PATH_INFO'] = $_SERVER['REQUEST_URI'] = ''.implode('/', $argv).'/';
+    $_SERVER['REQUEST_URI'] = ''.implode('/', $argv).'/';
+    $_SERVER['PATH_INFO'] = $_SERVER['REQUEST_URI'];
 }
 
 // load the utility functions
